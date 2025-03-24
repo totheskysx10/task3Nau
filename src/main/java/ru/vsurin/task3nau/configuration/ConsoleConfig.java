@@ -1,5 +1,6 @@
 package ru.vsurin.task3nau.configuration;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +15,11 @@ import java.util.Scanner;
 public class ConsoleConfig {
 
     private final CommandHandler commandHandler;
+    private final AppConfig appConfig;
+
     private static final String COMMANDS_MENU = String.join("\n",
             "Введите команду:",
-            "'/create {id} {name} {status}'   - создать задачу",
+            "'/create {name} {status}'        - создать задачу",
             "'/get {id}'                      - найти задачу",
             "'/del {id}'                      - удалить задачу",
             "'/get-all'                       - найти все задачи",
@@ -24,8 +27,20 @@ public class ConsoleConfig {
             "'/exit'                          - выход"
     );
 
-    public ConsoleConfig(CommandHandler commandHandler) {
+    public ConsoleConfig(CommandHandler commandHandler, AppConfig appConfig) {
         this.commandHandler = commandHandler;
+        this.appConfig = appConfig;
+    }
+
+    /**
+     * Выводит в консоль данные о приложении
+     */
+    @PostConstruct
+    void printAppInfo() {
+        String appName = appConfig.appInfo().name();
+        String appVersion = appConfig.appInfo().version();
+
+        System.out.println("AppName: " + appName + ", AppVersion: " + appVersion);
     }
 
     /**

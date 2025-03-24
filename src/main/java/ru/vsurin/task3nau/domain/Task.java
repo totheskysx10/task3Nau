@@ -20,8 +20,7 @@ public class Task {
      */
     private Status status;
 
-    public Task(Long id, String title, Status status) {
-        this.id = id;
+    public Task(String title, Status status) {
         this.title = title;
         this.status = status;
     }

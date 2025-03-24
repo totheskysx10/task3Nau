@@ -1,11 +1,8 @@
 package ru.vsurin.task3nau.service;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
-import ru.vsurin.task3nau.configuration.AppConfig;
 import ru.vsurin.task3nau.domain.Status;
 import ru.vsurin.task3nau.domain.Task;
-import ru.vsurin.task3nau.exception.TaskDuplicateException;
 import ru.vsurin.task3nau.exception.TaskNotFoundException;
 import ru.vsurin.task3nau.repository.TaskRepository;
 
@@ -15,41 +12,20 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final AppConfig appConfig;
 
-    public TaskServiceImpl(TaskRepository taskRepository, AppConfig appConfig) {
+    public TaskServiceImpl(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.appConfig = appConfig;
-    }
-
-    /**
-     * Выводит в консоль данные о приложении
-     */
-    @PostConstruct
-    void printAppInfo() {
-        String appName = appConfig.getAppName();
-        String appVersion = appConfig.getAppVersion();
-
-        System.out.println("AppName: " + appName + ", AppVersion: " + appVersion);
     }
 
     @Override
-    public void createTask(Long id, String title, Status status) throws TaskDuplicateException {
-        if (taskRepository.existsById(id)) {
-            throw new TaskDuplicateException("Задача с id " + id + " существует!");
-        }
-        Task task = new Task(id, title, status);
+    public void createTask(String title, Status status) {
+        Task task = new Task(title, status);
         taskRepository.create(task);
     }
 
     @Override
     public Task findById(Long id) throws TaskNotFoundException {
-        Task task = taskRepository.read(id);
-        if (task == null) {
-            throw new TaskNotFoundException("Задача с id " + id + " не найдена!");
-        }
-
-        return task;
+        return taskRepository.read(id).orElseThrow(() -> new TaskNotFoundException("Задача с id " + id + " не найдена!"));
     }
 
     @Override

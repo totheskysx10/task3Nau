@@ -30,10 +30,8 @@ public class CommandHandler {
         switch (cmd[0]) {
             case "/create" -> {
                 try {
-                    taskService.createTask(Long.valueOf(cmd[1]), cmd[2], Status.valueOf(cmd[3]));
+                    taskService.createTask(cmd[1], Status.valueOf(cmd[2]));
                     System.out.println("Задача успешно создана");
-                } catch (TaskDuplicateException e) {
-                    System.out.println(e.getMessage());
                 } catch (IllegalArgumentException e) {
                     System.out.println("Неверные данные!");
                 }

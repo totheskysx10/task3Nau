@@ -1,6 +1,7 @@
 package ru.vsurin.task3nau.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Базовый интерфейс доступа к данным
@@ -19,7 +20,7 @@ public interface EntityRepository<T, ID> {
      * Получить объект
      * @param id идентификатор
      */
-    T read(ID id);
+    Optional<T> read(ID id);
 
     /**
      * Обновить объект

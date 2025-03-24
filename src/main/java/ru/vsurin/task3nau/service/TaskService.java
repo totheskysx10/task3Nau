@@ -2,7 +2,6 @@ package ru.vsurin.task3nau.service;
 
 import ru.vsurin.task3nau.domain.Status;
 import ru.vsurin.task3nau.domain.Task;
-import ru.vsurin.task3nau.exception.TaskDuplicateException;
 import ru.vsurin.task3nau.exception.TaskNotFoundException;
 
 import java.util.List;
@@ -14,11 +13,10 @@ public interface TaskService {
 
     /**
      * Создать задачу
-     * @param id идентификатор
      * @param title название
      * @param status статус
      */
-    void createTask(Long id, String title, Status status) throws TaskDuplicateException;
+    void createTask(String title, Status status);
 
     /**
      * Найти задачу по идентификатору
