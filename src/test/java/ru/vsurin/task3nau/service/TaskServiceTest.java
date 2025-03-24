@@ -34,9 +34,6 @@ class TaskServiceTest {
     private CommentRepository commentRepository;
 
     @Mock
-    private AppConfig appConfig;
-
-    @Mock
     private PlatformTransactionManager transactionManager;
 
     @Mock
@@ -45,7 +42,7 @@ class TaskServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        taskService = new TaskServiceImpl(taskRepository, commentRepository, appConfig, transactionManager);
+        taskService = new TaskServiceImpl(taskRepository, commentRepository, transactionManager);
     }
 
     /**

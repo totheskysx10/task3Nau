@@ -24,28 +24,14 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final CommentRepository commentRepository;
-    private final AppConfig appConfig;
     private final PlatformTransactionManager transactionManager;
 
     public TaskServiceImpl(TaskRepository taskRepository,
                            CommentRepository commentRepository,
-                           AppConfig appConfig,
                            PlatformTransactionManager transactionManager) {
         this.taskRepository = taskRepository;
         this.commentRepository = commentRepository;
-        this.appConfig = appConfig;
         this.transactionManager = transactionManager;
-    }
-
-    /**
-     * Выводит в консоль данные о приложении
-     */
-    @PostConstruct
-    void printAppInfo() {
-        String appName = appConfig.getAppName();
-        String appVersion = appConfig.getAppVersion();
-
-        System.out.println("AppName: " + appName + ", AppVersion: " + appVersion);
     }
 
     @Override
@@ -62,15 +48,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteTaskWithComments(Long id) throws TaskNotFoundException {
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
-         try {
-             Task task = getTaskById(id);
-             List<Comment> comments = commentRepository.findCommentsByTask(task);
-             commentRepository.deleteAll(comments);
-             taskRepository.delete(task);
-             transactionManager.commit(status);
-         } catch (DataAccessException e) {
-             transactionManager.rollback(status);
-             throw e;
-         }
+        try {
+            Task task = getTaskById(id);
+            List<Comment> comments = commentRepository.findCommentsByTask(task);
+            commentRepository.deleteAll(comments);
+            taskRepository.delete(task);
+            transactionManager.commit(status);
+        } catch (DataAccessException e) {
+            transactionManager.rollback(status);
+            throw e;
+        }
     }
 }
