@@ -37,28 +37,29 @@ class TaskCustomRepositoryTest {
     }
 
     /**
-     * Тест поиска задач по части названия
+     * Тест поиска задач по проекту и части названия
      */
     @Test
-    void findByTitleContaining() {
+    void findByProjectAndTitleContaining() {
         User user = new User();
         userRepository.save(user);
-        Project project = new Project("p", "d", new Date(), user, new ArrayList<>());
-        projectRepository.save(project);
+        Project project1 = new Project("p1", "d", new Date(), user, new ArrayList<>());
+        projectRepository.save(project1);
+        Project project2 = new Project("p2", "d", new Date(), user, new ArrayList<>());
+        projectRepository.save(project2);
 
-        Task task1 = new Task("task1", Status.PLANNED, 1, project, user, new ArrayList<>(), new ArrayList<>());
+        Task task1 = new Task("task1", Status.PLANNED, 1, project1, user, new ArrayList<>(), new ArrayList<>());
         taskRepository.save(task1);
 
-        Task task2 = new Task("task2", Status.PLANNED, 1, project, user, new ArrayList<>(), new ArrayList<>());
+        Task task2 = new Task("task2", Status.PLANNED, 1, project2, user, new ArrayList<>(), new ArrayList<>());
         taskRepository.save(task2);
 
-        Task task3 = new Task("t", Status.PLANNED, 1, project, user, new ArrayList<>(), new ArrayList<>());
+        Task task3 = new Task("t", Status.PLANNED, 1, project2, user, new ArrayList<>(), new ArrayList<>());
         taskRepository.save(task3);
 
-        List<Task> foundTasks = taskCustomRepository.findByTitleContaining("task");
+        List<Task> foundTasks = taskCustomRepository.findByProjectAndTitleContaining("task", project2);
 
-        assertEquals(2, foundTasks.size());
-        assertEquals("task1", foundTasks.get(0).getTitle());
-        assertEquals("task2", foundTasks.get(1).getTitle());
+        assertEquals(1, foundTasks.size());
+        assertEquals("task2", foundTasks.get(0).getTitle());
     }
 }

@@ -1,6 +1,7 @@
 package ru.vsurin.task3nau.repository.custom;
 
 import ru.vsurin.task3nau.domain.Comment;
+import ru.vsurin.task3nau.domain.Task;
 
 import java.util.List;
 
@@ -10,8 +11,9 @@ import java.util.List;
 public interface CommentCustomRepository {
 
     /**
-     * Ищет комментарии по текстовому отрывку
+     * Ищет комментарии по задаче и текстовому отрывку
      * @param textFragment отрывок текста
+     * @param task задача
      */
-    List<Comment> findCommentsByTextFragment(String textFragment);
+    List<Comment> findCommentsByTaskAndTextFragment(String textFragment, Task task);
 }

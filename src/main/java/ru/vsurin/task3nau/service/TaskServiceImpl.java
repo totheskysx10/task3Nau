@@ -1,12 +1,10 @@
 package ru.vsurin.task3nau.service;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import ru.vsurin.task3nau.configuration.AppConfig;
 import ru.vsurin.task3nau.domain.Comment;
 import ru.vsurin.task3nau.domain.Task;
 import ru.vsurin.task3nau.exception.TaskNotFoundException;

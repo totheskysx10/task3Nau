@@ -38,30 +38,31 @@ class CommentCustomRepositoryTest {
     }
 
     /**
-     * Тест поиска комментариев по отрывку текста
+     * Тест поиска комментариев по задаче и отрывку текста
      */
     @Test
-    void findCommentsByTextFragment() {
+    void findCommentsByTaskAndTextFragment() {
         User user = new User();
         userRepository.save(user);
         Project project = new Project("p", "d", new Date(), user, new ArrayList<>());
         projectRepository.save(project);
-        Task task = new Task("task1", Status.PLANNED, 1, project, user, new ArrayList<>(), new ArrayList<>());
-        taskRepository.save(task);
+        Task task1 = new Task("task1", Status.PLANNED, 1, project, user, new ArrayList<>(), new ArrayList<>());
+        taskRepository.save(task1);
+        Task task2 = new Task("task2", Status.PLANNED, 1, project, user, new ArrayList<>(), new ArrayList<>());
+        taskRepository.save(task2);
 
-        Comment comment1 = new Comment("comment1", new Date(), user, task);
+        Comment comment1 = new Comment("comment1", new Date(), user, task1);
         commentRepository.save(comment1);
 
-        Comment comment2 = new Comment("comment2", new Date(), user, task);
+        Comment comment2 = new Comment("comment2", new Date(), user, task2);
         commentRepository.save(comment2);
 
-        Comment comment3 = new Comment("c", new Date(), user, task);
+        Comment comment3 = new Comment("c", new Date(), user, task2);
         commentRepository.save(comment3);
 
-        List<Comment> foundComments = commentCustomRepository.findCommentsByTextFragment("comment");
+        List<Comment> foundComments = commentCustomRepository.findCommentsByTaskAndTextFragment("comment", task2);
 
-        assertEquals(2, foundComments.size());
-        assertEquals("comment1", foundComments.get(0).getText());
-        assertEquals("comment2", foundComments.get(1).getText());
+        assertEquals(1, foundComments.size());
+        assertEquals("comment2", foundComments.get(0).getText());
     }
 }

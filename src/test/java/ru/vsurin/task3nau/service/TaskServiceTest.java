@@ -7,12 +7,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
-import ru.vsurin.task3nau.configuration.AppConfig;
 import ru.vsurin.task3nau.domain.*;
 import ru.vsurin.task3nau.exception.TaskNotFoundException;
 import ru.vsurin.task3nau.repository.CommentRepository;
 import ru.vsurin.task3nau.repository.TaskRepository;
-import ru.vsurin.task3nau.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +24,6 @@ class TaskServiceTest {
 
     @Mock
     private TaskRepository taskRepository;
-
-    @Mock
-    private UserRepository userRepository;
 
     @Mock
     private CommentRepository commentRepository;
@@ -105,6 +100,8 @@ class TaskServiceTest {
         Comment comment2 = new Comment();
         comment2.setText("comment2");
 
+        task.setComments(List.of(comment1, comment2));
+
         when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
         when(commentRepository.findCommentsByTask(task)).thenReturn(List.of(comment1, comment2));
         when(transactionManager.getTransaction(any())).thenReturn(transactionStatus);
@@ -116,6 +113,7 @@ class TaskServiceTest {
             verify(transactionManager, times(1)).rollback(transactionStatus);
             verify(commentRepository, times(1)).deleteAll(List.of(comment1, comment2));
             verify(taskRepository, times(0)).delete(task);
+            assertEquals(2, task.getComments().size());
         }
     }
 }
