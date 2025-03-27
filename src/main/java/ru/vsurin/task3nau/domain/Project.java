@@ -2,7 +2,7 @@ package ru.vsurin.task3nau.domain;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -35,7 +35,7 @@ public class Project {
      * Дата создания
      */
     @Column
-    private Date createdAt;
+    private LocalDate createdAt;
 
     /**
      * Владелец проекта
@@ -50,7 +50,7 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<Task> tasks;
 
-    public Project(String name, String description, Date createdAt, User owner, List<Task> tasks) {
+    public Project(String name, String description, LocalDate createdAt, User owner, List<Task> tasks) {
         this.name = name;
         this.description = description;
         this.createdAt = createdAt;
@@ -86,11 +86,11 @@ public class Project {
         this.description = description;
     }
 
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 

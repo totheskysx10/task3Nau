@@ -2,7 +2,8 @@ package ru.vsurin.task3nau.domain;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 /**
  * Комментарий
@@ -21,14 +22,14 @@ public class Comment {
     /**
      * Текст комментария
      */
-    @Column(columnDefinition = "text")
+    @Column
     private String text;
 
     /**
      * Дата создания
      */
     @Column
-    private Date createdAt;
+    private LocalDate createdAt;
 
     /**
      * Автор
@@ -44,7 +45,7 @@ public class Comment {
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
-    public Comment(String text, Date createdAt, User author, Task task) {
+    public Comment(String text, LocalDate createdAt, User author, Task task) {
         this.text = text;
         this.createdAt = createdAt;
         this.author = author;
@@ -70,11 +71,11 @@ public class Comment {
         this.text = text;
     }
 
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 

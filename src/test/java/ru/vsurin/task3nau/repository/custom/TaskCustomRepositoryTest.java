@@ -11,8 +11,8 @@ import ru.vsurin.task3nau.repository.ProjectRepository;
 import ru.vsurin.task3nau.repository.TaskRepository;
 import ru.vsurin.task3nau.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,9 +43,9 @@ class TaskCustomRepositoryTest {
     void findByProjectAndTitleContaining() {
         User user = new User();
         userRepository.save(user);
-        Project project1 = new Project("p1", "d", new Date(), user, new ArrayList<>());
+        Project project1 = new Project("p1", "d", LocalDate.of(2010, 1, 1), user, new ArrayList<>());
         projectRepository.save(project1);
-        Project project2 = new Project("p2", "d", new Date(), user, new ArrayList<>());
+        Project project2 = new Project("p2", "d", LocalDate.of(2010, 1, 1), user, new ArrayList<>());
         projectRepository.save(project2);
 
         Task task1 = new Task("task1", Status.PLANNED, 1, project1, user, new ArrayList<>(), new ArrayList<>());

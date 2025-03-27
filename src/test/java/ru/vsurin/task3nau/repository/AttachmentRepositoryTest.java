@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.vsurin.task3nau.domain.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,7 +37,7 @@ class AttachmentRepositoryTest {
     void findAttachmentsByTask() {
         User user = new User();
         userRepository.save(user);
-        Project project = new Project("p", "d", new Date(), user, new ArrayList<>());
+        Project project = new Project("p", "d", LocalDate.of(2010, 1, 1), user, new ArrayList<>());
         projectRepository.save(project);
         Task task1 = new Task("task1", Status.PLANNED, 1, project, user, new ArrayList<>(), new ArrayList<>());
         taskRepository.save(task1);
