@@ -46,7 +46,7 @@ public class TaskController {
      * @param id идентификатор
      */
     @DeleteMapping("/del-task-with-comments")
-    public ResponseEntity<String> deleteTaskWithComments(@RequestParam Long id) {
+    public ResponseEntity<Void> deleteTaskWithComments(@RequestParam Long id) {
         try {
             taskService.deleteTaskWithComments(id);
             return ResponseEntity.ok().build();
