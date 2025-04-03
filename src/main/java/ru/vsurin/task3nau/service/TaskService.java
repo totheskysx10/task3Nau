@@ -1,10 +1,7 @@
 package ru.vsurin.task3nau.service;
 
-import ru.vsurin.task3nau.domain.Status;
 import ru.vsurin.task3nau.domain.Task;
 import ru.vsurin.task3nau.exception.TaskNotFoundException;
-
-import java.util.List;
 
 /**
  * Интерфейс бизнес-логики для управления задачами
@@ -12,33 +9,20 @@ import java.util.List;
 public interface TaskService {
 
     /**
-     * Создать задачу
-     * @param title название
-     * @param status статус
+     * Создает задачу
+     * @param task новая задача
      */
-    void createTask(String title, Status status);
+    void createTask(Task task);
 
     /**
-     * Найти задачу по идентификатору
+     * Получает задачу по идентификатору
      * @param id идентификатор
      */
-    Task findById(Long id) throws TaskNotFoundException;
+    Task getTaskById(Long id) throws TaskNotFoundException;
 
     /**
-     * Обновить статус задачи
-     * @param id идентификатор
-     * @param status статус
-     */
-    void updateTaskStatus(Long id, Status status) throws TaskNotFoundException;
-
-    /**
-     * Удалить задачу
+     * Удаляет задачу и все связанные комментарии
      * @param id идентификатор
      */
-    void deleteById(Long id);
-
-    /**
-     * Найти все задачи
-     */
-    List<Task> findAll();
+    void deleteTaskWithComments(Long id) throws TaskNotFoundException;
 }
