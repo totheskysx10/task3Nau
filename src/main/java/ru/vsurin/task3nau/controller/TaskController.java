@@ -46,12 +46,8 @@ public class TaskController {
      * @param id идентификатор
      */
     @DeleteMapping("/del-task-with-comments")
-    public ResponseEntity<Void> deleteTaskWithComments(@RequestParam Long id) {
-        try {
-            taskService.deleteTaskWithComments(id);
-            return ResponseEntity.ok().build();
-        } catch (TaskNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> deleteTaskWithComments(@RequestParam Long id) throws TaskNotFoundException {
+        taskService.deleteTaskWithComments(id);
+        return ResponseEntity.ok().build();
     }
 }
