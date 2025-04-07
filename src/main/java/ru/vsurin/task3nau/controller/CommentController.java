@@ -4,7 +4,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vsurin.task3nau.domain.Comment;
 import ru.vsurin.task3nau.domain.Task;
-import ru.vsurin.task3nau.repository.custom.CommentCustomRepository;
+import ru.vsurin.task3nau.assembler.CommentAssembler;
+import ru.vsurin.task3nau.response.CommentDto;
+import ru.vsurin.task3nau.service.CommentService;
 
 import java.util.List;
 
@@ -15,10 +17,12 @@ import java.util.List;
 @RequestMapping("/custom/comments")
 public class CommentController {
 
-    private final CommentCustomRepository commentCustomRepository;
+    private final CommentService commentService;
+    private final CommentAssembler commentAssembler;
 
-    public CommentController(CommentCustomRepository commentCustomRepository) {
-        this.commentCustomRepository = commentCustomRepository;
+    public CommentController(CommentService commentService, CommentAssembler commentAssembler) {
+        this.commentService = commentService;
+        this.commentAssembler = commentAssembler;
     }
 
     /**
@@ -27,13 +31,17 @@ public class CommentController {
      * @param task задача
      */
     @GetMapping("/search")
-    public ResponseEntity<List<Comment>> findCommentsByTaskAndTextFragment(@RequestParam String textFragment, @ModelAttribute Task task) {
-        List<Comment> comments = commentCustomRepository.findCommentsByTaskAndTextFragment(textFragment, task);
+    public ResponseEntity<List<CommentDto>> findCommentsByTaskAndTextFragment(@RequestParam String textFragment, @ModelAttribute Task task) {
+        List<Comment> comments = commentService.findCommentsByTaskAndTextFragment(textFragment, task);
 
         if (comments.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(comments);
+        List<CommentDto> result = comments.stream()
+                .map(commentAssembler::toDto)
+                .toList();
+
+        return ResponseEntity.ok(result);
     }
 }

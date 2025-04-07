@@ -2,10 +2,12 @@ package ru.vsurin.task3nau.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.vsurin.task3nau.assembler.TaskAssembler;
 import ru.vsurin.task3nau.domain.Project;
 import ru.vsurin.task3nau.domain.Task;
 import ru.vsurin.task3nau.exception.TaskNotFoundException;
 import ru.vsurin.task3nau.repository.custom.TaskCustomRepository;
+import ru.vsurin.task3nau.response.TaskDto;
 import ru.vsurin.task3nau.service.TaskService;
 
 import java.util.List;
@@ -17,12 +19,12 @@ import java.util.List;
 @RequestMapping("/custom/tasks")
 public class TaskController {
 
-    private final TaskCustomRepository taskCustomRepository;
     private final TaskService taskService;
+    private final TaskAssembler taskAssembler;
 
-    public TaskController(TaskCustomRepository taskCustomRepository, TaskService taskService) {
-        this.taskCustomRepository = taskCustomRepository;
+    public TaskController(TaskService taskService, TaskAssembler taskAssembler) {
         this.taskService = taskService;
+        this.taskAssembler = taskAssembler;
     }
 
     /**
@@ -31,14 +33,18 @@ public class TaskController {
      * @param project проект
      */
     @GetMapping("/search")
-    public ResponseEntity<List<Task>> findByProjectAndTitleContaining(@RequestParam String titleFragment, @ModelAttribute Project project) {
-        List<Task> tasks = taskCustomRepository.findByProjectAndTitleContaining(titleFragment, project);
+    public ResponseEntity<List<TaskDto>> findByProjectAndTitleContaining(@RequestParam String titleFragment, @ModelAttribute Project project) {
+        List<Task> tasks = taskService.findByProjectAndTitleContaining(titleFragment, project);
 
         if (tasks.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(tasks);
+        List<TaskDto> result = tasks.stream()
+                .map(taskAssembler::toDto)
+                .toList();
+
+        return ResponseEntity.ok(result);
     }
 
     /**
