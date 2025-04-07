@@ -2,8 +2,10 @@ package ru.vsurin.task3nau.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.vsurin.task3nau.assembler.UserAssembler;
 import ru.vsurin.task3nau.domain.User;
 import ru.vsurin.task3nau.exception.UserNotFoundException;
+import ru.vsurin.task3nau.response.UserDto;
 import ru.vsurin.task3nau.service.UserService;
 
 /**
@@ -14,9 +16,11 @@ import ru.vsurin.task3nau.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final UserAssembler userAssembler;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserAssembler userAssembler) {
         this.userService = userService;
+        this.userAssembler = userAssembler;
     }
 
     /**
@@ -24,9 +28,10 @@ public class UserController {
      * @param name имя пользователя
      */
     @GetMapping("/get-by-name")
-    public ResponseEntity<User> getByName(@RequestParam String name) throws UserNotFoundException {
+    public ResponseEntity<UserDto> getByName(@RequestParam String name) throws UserNotFoundException {
         User user = userService.getUserByName(name);
-        return ResponseEntity.ok(user);
+        UserDto userDto = userAssembler.toDto(user);
+        return ResponseEntity.ok(userDto);
     }
 
     /**

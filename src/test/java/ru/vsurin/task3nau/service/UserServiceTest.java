@@ -44,9 +44,6 @@ class UserServiceTest {
     @Mock
     private TransactionStatus transactionStatus;
 
-    @Mock
-    private PasswordEncoder passwordEncoder;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -55,8 +52,7 @@ class UserServiceTest {
                 transactionManager,
                 taskRepository,
                 commentRepository,
-                projectRepository,
-                passwordEncoder
+                projectRepository
         );
     }
 

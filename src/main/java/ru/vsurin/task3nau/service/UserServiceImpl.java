@@ -6,8 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -25,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса пользователей
@@ -38,7 +35,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final TaskRepository taskRepository;
     private final CommentRepository commentRepository;
     private final ProjectRepository projectRepository;
-    private final PasswordEncoder passwordEncoder;
 
     private final String ROLE_PREFIX = "ROLE_";
 
@@ -46,14 +42,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                            PlatformTransactionManager transactionManager,
                            TaskRepository taskRepository,
                            CommentRepository commentRepository,
-                           ProjectRepository projectRepository,
-                           PasswordEncoder passwordEncoder) {
+                           ProjectRepository projectRepository) {
         this.userRepository = userRepository;
         this.transactionManager = transactionManager;
         this.taskRepository = taskRepository;
         this.commentRepository = commentRepository;
         this.projectRepository = projectRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -62,7 +56,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserDuplicateException("Пользователь уже существует!");
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(List.of(Role.USER));
         user.setCreationDate(LocalDate.now());
         user.setComments(new ArrayList<>());
@@ -122,6 +115,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(ROLE_PREFIX + role))
-                .collect(Collectors.toList());
+                .toList();
     }
 }
