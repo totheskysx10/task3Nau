@@ -6,10 +6,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import ru.vsurin.task3nau.domain.Comment;
+import ru.vsurin.task3nau.domain.Project;
 import ru.vsurin.task3nau.domain.Task;
 import ru.vsurin.task3nau.exception.TaskNotFoundException;
 import ru.vsurin.task3nau.repository.CommentRepository;
 import ru.vsurin.task3nau.repository.TaskRepository;
+import ru.vsurin.task3nau.repository.custom.TaskCustomRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,13 +25,16 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final CommentRepository commentRepository;
     private final PlatformTransactionManager transactionManager;
+    private final TaskCustomRepository taskCustomRepository;;
 
     public TaskServiceImpl(TaskRepository taskRepository,
                            CommentRepository commentRepository,
-                           PlatformTransactionManager transactionManager) {
+                           PlatformTransactionManager transactionManager,
+                           TaskCustomRepository taskCustomRepository) {
         this.taskRepository = taskRepository;
         this.commentRepository = commentRepository;
         this.transactionManager = transactionManager;
+        this.taskCustomRepository = taskCustomRepository;
     }
 
     @Override
@@ -56,5 +61,15 @@ public class TaskServiceImpl implements TaskService {
             transactionManager.rollback(status);
             throw e;
         }
+    }
+
+    @Override
+    public List<Task> findByProjectAndTitleContaining(String titleFragment, Project project) {
+        return taskCustomRepository.findByProjectAndTitleContaining(titleFragment, project);
+    }
+
+    @Override
+    public Iterable<Task> findAll() {
+        return taskRepository.findAll();
     }
 }
