@@ -22,13 +22,13 @@ public class ReportControllerView {
     }
 
     /**
-     * Получает отчёт (содержимое) по идентификатору
+     * Отображает отчёт (содержимое) по идентификатору
      * @param id идентификатор
      * @param model модель
      */
     @GetMapping
-    public String getReport(@RequestParam Long id, Model model) throws ReportNotFoundException {
-        String reportContent = reportService.getReportContentById(id);
+    public String viewReport(@RequestParam Long id, Model model) throws ReportNotFoundException {
+        String reportContent = reportService.getReportById(id).getContent();
         model.addAttribute("reportContent", reportContent);
         return "reportView";
     }

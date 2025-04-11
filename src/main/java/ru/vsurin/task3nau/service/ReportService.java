@@ -1,5 +1,6 @@
 package ru.vsurin.task3nau.service;
 
+import ru.vsurin.task3nau.domain.Report;
 import ru.vsurin.task3nau.exception.ReportNotFoundException;
 
 /**
@@ -13,8 +14,8 @@ public interface ReportService {
     Long createReport();
 
     /**
-     * Получает отчёт (содержимое) по идентификатору
+     * Получает отчёт по идентификатору
      * @param id идентификатор
      */
-    String getReportContentById(Long id) throws ReportNotFoundException;
+    Report getReportById(Long id) throws ReportNotFoundException;
 }

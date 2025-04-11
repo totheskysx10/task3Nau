@@ -46,11 +46,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public String getReportContentById(Long id) throws ReportNotFoundException {
+    public Report getReportById(Long id) throws ReportNotFoundException {
         Optional<Report> optionalReport = reportRepository.findById(id);
         Report report = optionalReport.orElseThrow(() -> new ReportNotFoundException(String.format("Отчёт с id %d не найден", id)));
 
-        return report.getContent();
+        return report;
     }
 
     /**
