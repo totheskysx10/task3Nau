@@ -34,7 +34,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/login", "/registration").anonymous()
+                        .requestMatchers("/login", "/registration", "/custom/users/registration").anonymous()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

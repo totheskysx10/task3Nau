@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 <head>
     <title>Регистрация</title>
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
     <hr>
 </div>
 
-<form th:action="@{/registration}" method="post">
+<form id="registration-form">
     <table cellpadding="5">
         <tr>
             <td><label for="name">Имя пользователя:</label></td>
@@ -31,5 +31,42 @@
         </tr>
     </table>
 </form>
+
+<div id="error-modal" style="display: none">
+    <p id="error-message"></p>
+    <button onclick="document.getElementById('error-modal').style.display='none'">Закрыть</button>
+</div>
+
+<script>
+    document.getElementById("registration-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const password = document.getElementById("password").value;
+
+        const registerDto = {
+            name: name,
+            password: password
+        };
+
+        fetch('/custom/users/registration', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(registerDto)
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "/login";
+                } else if (response.status === 500) {
+                    response.json().then(data => {
+                        document.getElementById("error-message").textContent = data.message;
+                        document.getElementById("error-modal").style.display = "block";
+                    });
+                }
+            });
+    });
+</script>
 </body>
 </html>
