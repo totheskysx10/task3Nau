@@ -1,10 +1,13 @@
 package ru.vsurin.task3nau.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.vsurin.task3nau.assembler.UserAssembler;
 import ru.vsurin.task3nau.domain.User;
+import ru.vsurin.task3nau.exception.UserDuplicateException;
 import ru.vsurin.task3nau.exception.UserNotFoundException;
+import ru.vsurin.task3nau.response.RegisterDto;
 import ru.vsurin.task3nau.response.UserDto;
 import ru.vsurin.task3nau.service.UserService;
 
@@ -17,10 +20,26 @@ public class UserController {
 
     private final UserService userService;
     private final UserAssembler userAssembler;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, UserAssembler userAssembler) {
+    public UserController(UserService userService, UserAssembler userAssembler, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.userAssembler = userAssembler;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
+     * Регистрация пользователя
+     * @param registerDto DTO регистрации
+     */
+    @PostMapping("/registration")
+    public ResponseEntity<Void> addUser(@RequestBody RegisterDto registerDto) throws UserDuplicateException {
+        User user = new User();
+        user.setName(registerDto.getName());
+        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+
+        userService.createUser(user);
+        return ResponseEntity.ok().build();
     }
 
     /**
