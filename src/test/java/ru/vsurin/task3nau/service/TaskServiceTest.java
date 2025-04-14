@@ -11,6 +11,7 @@ import ru.vsurin.task3nau.domain.*;
 import ru.vsurin.task3nau.exception.TaskNotFoundException;
 import ru.vsurin.task3nau.repository.CommentRepository;
 import ru.vsurin.task3nau.repository.TaskRepository;
+import ru.vsurin.task3nau.repository.custom.TaskCustomRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,9 @@ class TaskServiceTest {
     private TaskRepository taskRepository;
 
     @Mock
+    private TaskCustomRepository taskCustomRepository;
+
+    @Mock
     private CommentRepository commentRepository;
 
     @Mock
@@ -37,7 +41,7 @@ class TaskServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        taskService = new TaskServiceImpl(taskRepository, commentRepository, transactionManager);
+        taskService = new TaskServiceImpl(taskRepository, commentRepository, transactionManager, taskCustomRepository);
     }
 
     /**

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+>
+<head>
+    <title>Регистрация</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h2>Регистрация</h2>
+
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+    <hr>
+</div>
+
+<form id="registration-form">
+    <table cellpadding="5">
+        <tr>
+            <td><label for="name">Имя пользователя:</label></td>
+            <td><input type="text" id="name" name="name" required></td>
+        </tr>
+        <tr>
+            <td><label for="password">Пароль:</label></td>
+            <td><input type="password" id="password" name="password" required></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="Зарегистрироваться">
+            </td>
+        </tr>
+    </table>
+</form>
+
+<div id="error-modal" style="display: none">
+    <p id="error-message"></p>
+    <button onclick="document.getElementById('error-modal').style.display='none'">Закрыть</button>
+</div>
+
+<script>
+    document.getElementById("registration-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const password = document.getElementById("password").value;
+
+        const registerDto = {
+            name: name,
+            password: password
+        };
+
+        fetch('/custom/users/registration', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(registerDto)
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "/login";
+                } else if (response.status === 500) {
+                    response.json().then(data => {
+                        document.getElementById("error-message").textContent = data.message;
+                        document.getElementById("error-modal").style.display = "block";
+                    });
+                }
+            });
+    });
+</script>
+</body>
+</html>

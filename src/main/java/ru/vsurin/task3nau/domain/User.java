@@ -26,10 +26,16 @@ public class User {
     private String name;
 
     /**
-     * Почта
+     * Шифрованный пароль
      */
     @Column
-    private String email;
+    private String password;
+
+    /**
+     * Роли пользователя
+     */
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Role> roles;
 
     /**
      * Дата создания
@@ -55,17 +61,19 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<Comment> comments;
 
-    public User(String name, String email, LocalDate creationDate, List<Task> tasks, List<Project> ownedProjects, List<Comment> comments) {
+    public User() {
+
+    }
+
+    public User(Long id, String name, String password, List<Role> roles, LocalDate creationDate, List<Task> tasks, List<Project> ownedProjects, List<Comment> comments) {
+        this.id = id;
         this.name = name;
-        this.email = email;
+        this.password = password;
+        this.roles = roles;
         this.creationDate = creationDate;
         this.tasks = tasks;
         this.ownedProjects = ownedProjects;
         this.comments = comments;
-    }
-
-    public User() {
-
     }
 
     public Long getId() {
@@ -80,16 +88,16 @@ public class User {
         return name;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public LocalDate getCreationDate() {
@@ -124,12 +132,21 @@ public class User {
         this.comments = comments;
     }
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
                 ", creationDate=" + creationDate +
                 ", tasks=" + tasks +
                 ", ownedProjects=" + ownedProjects +
