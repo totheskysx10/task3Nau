@@ -2,6 +2,8 @@ package ru.vsurin.task3nau.domain;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 /**
  * Отчёт
  */
@@ -59,5 +61,17 @@ public class Report {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Report report = (Report) o;
+        return status == report.status && Objects.equals(content, report.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, content);
     }
 }

@@ -38,7 +38,9 @@ public class SpringSecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .defaultSuccessUrl("/login-success", true)
+                )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login")
                         .permitAll()
