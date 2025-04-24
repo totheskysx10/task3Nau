@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчет</title>
+</head>
+<body>
+<h1>Отчет</h1>
+<h2>Произошла ошибка</h2>
+<table border="1">
+    <tr>
+        <td>Текст ошибки</td>
+        <td th:text="${reportError}">0</td>
+    </tr>
+</table>
+</body>
+</html>

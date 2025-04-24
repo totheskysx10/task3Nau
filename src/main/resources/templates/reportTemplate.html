@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчет</title>
+</head>
+<body>
+<h1>Отчет</h1>
+<h2>Количество пользователей</h2>
+<table border="1">
+    <tr>
+        <td>Количество пользователей</td>
+        <td th:text="${userCount}">0</td>
+    </tr>
+</table>
+
+<hr>
+<h2>Tasks</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Project</th>
+        <th>assignedUser</th>
+    </tr>
+    <tr th:each="task : ${taskList}">
+        <td th:text="${task.id}"></td>
+        <td th:text="${task.title}"></td>
+        <td th:text="${task.status}"></td>
+        <td th:text="${task.priority}"></td>
+        <td th:text="${task.project.name}"></td>
+        <td th:text="${task.assignedUser.name}"></td>
+    </tr>
+</table>
+
+<hr>
+<h2>Метрики</h2>
+<table border="1">
+    <tr>
+        <td>Время подсчета пользователей (мс)</td>
+        <td th:text="${userCountDuration}">0</td>
+    </tr>
+    <tr>
+        <td>Время получения задач (мс)</td>
+        <td th:text="${taskListDuration}">0</td>
+    </tr>
+    <tr>
+        <td>Время формирования отчета (мс)</td>
+        <td th:text="${totalDuration}">0</td>
+    </tr>
+</table>
+</body>
+</html>
