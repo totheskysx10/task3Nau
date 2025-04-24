@@ -1,10 +1,13 @@
 package ru.vsurin.task3nau.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 /**
  * DTO задачи
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TaskDto {
     private Long id;
     private String title;
